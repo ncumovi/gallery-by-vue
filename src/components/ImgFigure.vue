@@ -1,0 +1,91 @@
+<template>
+
+  <figure class="img-figure" :style="styObj" >
+    <img :src='ImgDatas.imageUrl' :alt='ImgDatas.title'></img>
+    <figcaption>
+      <h2 class='img-title'>{{ImgDatas.title}}</h2>
+      <div class='img-back' onClick={this.handleClick}>
+        <p>{{ImgDatas.desc}}</p>
+      </div>
+    </figcaption>
+  </figure>
+
+
+</template>
+
+<script>
+export default {
+  props:[
+    'ImgDatas'
+  ],
+  mounted:function(){
+
+    setTimeout(function(){
+
+      this.styObj = this.ImgDatas.pos;
+
+    }.bind(this),50)
+
+  },
+  data () {
+    return {
+      styObj: this.ImgDatas.pos
+    }
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+ .img-figure{
+    position: absolute;
+    width: 320px;
+    height: 360px;
+    margin: 0;
+    padding: 40px;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-color: #fff;
+    transform-style: preserve-3d;
+    transition: all 0.6s ease-in-out ;
+    transform-origin: 0 50% 0;
+  }
+  .img-figure img{
+    width: 240px;
+    height: 240px;
+    backface-visibility: hidden;
+  }
+  .img-figure.is-inverse {
+    transform:  translateX(320px) rotateY(180deg);
+  }
+  figcaption{
+    text-align: center;
+  }
+  figcaption .img-title{
+    margin: 20px 0 0 0;
+    color: #a7a0a2;
+    font-size: 16px;
+    backface-visibility: hidden;
+  }
+  figcaption .img-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    padding: 50px 40px;
+    overflow: auto;
+    color: #a7a0a2;
+    font-size: 22px;
+    line-height: 1.25;
+    text-align: left;
+    background-color: #fff;
+    backface-visibility: hidden;
+    box-sizing: border-box;
+    transform: rotateY(-180deg) translateZ(1px);
+  }
+  figcaption .img-back  p {
+    margin: 0;
+  }
+</style>
