@@ -1,6 +1,6 @@
 <template>
 
-  <figure class="img-figure" :style="styObj" >
+  <figure class="img-figure" :class="{'is-inverse':ImgDatas.isInverse}" :style="styObj" >
     <img :src='ImgDatas.imageUrl' :alt='ImgDatas.title'></img>
     <figcaption>
       <h2 class='img-title'>{{ImgDatas.title}}</h2>
@@ -22,14 +22,29 @@ export default {
 
     setTimeout(function(){
 
-      this.styObj = this.ImgDatas.pos;
+      this.giveData();
 
-    }.bind(this),50)
+    }.bind(this),100)
 
+
+  },
+  watch:{
+    ImgDatas: {
+　　　　handler(v) {
+　　　　　 this.giveData();
+　　　　},
+　　　　deep: true
+　　}
   },
   data () {
     return {
-      styObj: this.ImgDatas.pos
+      styObj: {}
+    }
+  },
+  methods:{
+    giveData(){
+      this.styObj = this.ImgDatas.pos;
+      this.styObj.transform = 'rotate('+this.ImgDatas.rotate+')';
     }
   }
 }
@@ -39,6 +54,8 @@ export default {
 <style scoped>
  .img-figure{
     position: absolute;
+    left: 0;
+    top:0;
     width: 320px;
     height: 360px;
     margin: 0;
@@ -56,7 +73,7 @@ export default {
     backface-visibility: hidden;
   }
   .img-figure.is-inverse {
-    transform:  translateX(320px) rotateY(180deg);
+    transform:  translateX(320px) rotateY(180deg)!important;
   }
   figcaption{
     text-align: center;

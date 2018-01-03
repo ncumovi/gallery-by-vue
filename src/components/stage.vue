@@ -1,7 +1,7 @@
 <template>
    <section class='stage' ref='stage'>
       <section class='img-src'>
-        <img-figure v-for='(img,index) in imageDatas' :key="index"  :img-datas='img'/>
+        <img-figure v-for='(img,index) in imageDatas' :key="index"  :img-datas='img' @click.native='center(index)'/>
       </section>
       <nav class='controller-nav'>
         <!-- <ControllerUnit key={index} arrange={this.state.imgsArranageArr[index]} inverse={this.inverse(index)} center={this.center(index)}/> -->
@@ -19,6 +19,8 @@ imgDatas = (function genImageUrl(imageDatasArr) {
   for (var i = 0; i < imageDatasArr.length; i++) {
     var singleImageData = imageDatasArr[i];
     singleImageData.imageUrl = require('../../static/' + singleImageData.fileName); //结合require处理图片的地址
+    //初始化图片翻转 默认false
+    singleImageData.isInverse = false;
     imageDatasArr[i] = singleImageData;
   }
   return imageDatasArr;
@@ -52,7 +54,6 @@ export default {
     ImgFigure:ImgFigure
   },
   mounted:function(){
-
     //首先拿到舞台的大小
     var stageDom = this.$refs.stage,
       stageW = stageDom.scrollWidth,
@@ -61,45 +62,57 @@ export default {
       halfStageH = Math.ceil(stageH / 2);
 
     //拿到一个imgageFigure的大小
-    this.$nextTick(function(){
-
-      var imgFigureDom = this.$children[0].$el,
-          imgW = imgFigureDom.scrollWidth,
-          imgH = imgFigureDom.scrollHeight,
-          halfImgW = Math.ceil(imgW / 2),
-          halfImgH = Math.ceil(imgH / 2);
+    var imgFigureDom = this.$children[0].$el,
+        imgW = imgFigureDom.scrollWidth,
+        imgH = imgFigureDom.scrollHeight,
+        halfImgW = Math.ceil(imgW / 2),
+        halfImgH = Math.ceil(imgH / 2);
 
 
-      //计算中心图片的位置
-      this.Constant.centerPos = {
-        left: (halfStageW - halfImgW)+'px',
-        top: (halfStageH - halfImgH)+'px'
-      }
+    //计算中心图片的位置
+    this.Constant.centerPos = {
+      left: (halfStageW - halfImgW)+'px',
+      top: (halfStageH - halfImgH)+'px'
+    }
 
-      //计算左侧图片的位置 水平范围
-      this.Constant.hPosRange.leftSecx[0] = -halfImgW;
-      this.Constant.hPosRange.leftSecx[1] = halfStageW - halfImgW * 3;
-      //计算右侧图片的位置 水平范围
-      this.Constant.hPosRange.rightSecx[0] = halfStageW + halfImgW;
-      this.Constant.hPosRange.rightSecx[1] = stageW - halfImgW;
-      //计算水平图片的位置 竖直范围
-      this.Constant.hPosRange.y[0] = -halfImgH;
-      this.Constant.hPosRange.y[1] = stageH - halfImgH;
-      //计算上侧图片的位置 竖直范围
-      this.Constant.vPosRange.topY[0] = -halfImgH;
-      this.Constant.vPosRange.topY[1] = halfStageH - halfImgH * 3;
+    //计算左侧图片的位置 水平范围
+    this.Constant.hPosRange.leftSecx[0] = -halfImgW;
+    this.Constant.hPosRange.leftSecx[1] = halfStageW - halfImgW * 3;
+    //计算右侧图片的位置 水平范围
+    this.Constant.hPosRange.rightSecx[0] = halfStageW + halfImgW;
+    this.Constant.hPosRange.rightSecx[1] = stageW - halfImgW;
+    //计算水平图片的位置 竖直范围
+    this.Constant.hPosRange.y[0] = -halfImgH;
+    this.Constant.hPosRange.y[1] = stageH - halfImgH;
+    //计算上侧图片的位置 竖直范围
+    this.Constant.vPosRange.topY[0] = -halfImgH;
+    this.Constant.vPosRange.topY[1] = halfStageH - halfImgH * 3;
 
-      //计算上侧图片的位置 水平范围
-      this.Constant.vPosRange.x[0] = halfStageW - imgW;
-      this.Constant.vPosRange.x[1] = halfStageW;
+    //计算上侧图片的位置 水平范围
+    this.Constant.vPosRange.x[0] = halfStageW - imgW;
+    this.Constant.vPosRange.x[1] = halfStageW;
 
-      this.rearrange(2);
-    })
+    this.rearrange(2);
   },
   methods:{
+    // 翻转图片
+    inverse(index){
+
+      this.imageDatas[index].isInverse = !this.imageDatas[index].isInverse;
+
+    },
+    //点击图片 图片居中
+    center(index){
+      if(this.imageDatas[index].isCenter){
+        this.inverse(index);
+      }else{
+        this.rearrange(index);
+      }
+    },
+    //重新排序的方法
     rearrange(centerIndex){
       var vm = this;
-      var imgsArranageArr = this.imageDatas,
+      var imgsArranageArr =  [].concat(JSON.parse(JSON.stringify(this.imageDatas))),
           Constant = this.Constant,
           centerPos = Constant.centerPos,
           hPosRange = Constant.hPosRange,
@@ -116,41 +129,24 @@ export default {
           topImgSpliceIndex = 0,
           imgsArrangeCenter = imgsArranageArr.splice(centerIndex, 1);
 
-      // this.imageDatas.forEach(function (element, index) {
-      //   if (!imgsArranageArr[index]) {
-      //     imgsArranageArr[index] = {
-      //       pos: {
-      //         left: 0,
-      //         top: 0
-      //       },
-      //       rotate:0,
-      //       isInverse:false, //图片正反面
-      //       isCenter:false //图片是否居中
-      //     }
-      //   }
 
-      // }, this);
+      imgsArrangeCenter[0].pos = centerPos  //首先居中 cengterIndex的图片
 
-
-
-      imgsArrangeCenter[0].pos = centerPos;  //首先居中 cengterIndex的图片
       imgsArrangeCenter[0].rotate = 0;  //居中的图片centerIndex不需要旋转
       imgsArrangeCenter[0].isCenter = true;  //图片居中
-
 
       //取出要布局上侧图片的状态信息
       topImgSpliceIndex = Math.ceil(Math.random() * (imgsArranageArr.length - topImgNum));
       imgsArrangeTopArr = imgsArranageArr.splice(topImgSpliceIndex, topImgNum);
 
-
       //布局位于上侧的图片
       imgsArrangeTopArr.forEach(function (v, index) {
-        imgsArrangeCenter[0].pos = {
+        imgsArrangeTopArr[0].pos = {
           top: vm.getRangeRandom(vPosRangeTopY[0], vPosRangeTopY[1])+'px',
           left: vm.getRangeRandom(vPosRangeX[0], vPosRangeX[1])+'px',
         };
-        imgsArrangeCenter[0].rotate = vm.get30DegRandom();
-        imgsArrangeCenter[0].isCenter = false;
+        imgsArrangeTopArr[0].rotate = vm.get30DegRandom()+'deg';
+        imgsArrangeTopArr[0].isCenter = false;
       })
 
 
@@ -170,7 +166,7 @@ export default {
           top: vm.getRangeRandom(hPosRangeY[0], hPosRangeY[1])+'px',
           left: vm.getRangeRandom(hPosRangeLOrR[0], hPosRangeLOrR[1])+'px',
         };
-        imgsArranageArr[i].rotate = vm.get30DegRandom();
+        imgsArranageArr[i].rotate = vm.get30DegRandom()+'deg';
         imgsArranageArr[i].isCenter = false;
       }
 
@@ -190,7 +186,7 @@ export default {
     },
     // 获取0-30度之间任意正负值
     get30DegRandom(){
-      return (Math.random() > 0.5 ? '':'-'+Math.ceil(Math.random()*30));
+      return ((Math.random() > 0.5 ? '':'-')+ Math.ceil(Math.random()*30));
     }
   }
 }
