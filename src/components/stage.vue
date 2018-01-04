@@ -101,10 +101,6 @@ export default {
       if(this.imageDatas[index].isCenter){ //是否居中
         this.inverse(index);
       }else{
-        // 初始化所有数据 事所有图片回归未翻转状态
-        for(var i=0;i<this.imageDatas.length;i++){
-          this.imageDatas[i].isInverse = false;
-        }
         this.center(index);
       }
     },
@@ -124,6 +120,10 @@ export default {
     },
     //重新排序的方法
     rearrange(centerIndex){
+      // 初始化所有数据 事所有图片回归未翻转状态
+      for(var i=0;i<this.imageDatas.length;i++){
+        this.imageDatas[i].isInverse = false;
+      }
       var vm = this;
       var imgsArranageArr =  [].concat(JSON.parse(JSON.stringify(this.imageDatas))),
           Constant = this.Constant,

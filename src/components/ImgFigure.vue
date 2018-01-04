@@ -4,7 +4,7 @@
     <img :src='ImgDatas.imageUrl' :alt='ImgDatas.title'></img>
     <figcaption>
       <h2 class='img-title'>{{ImgDatas.title}}</h2>
-      <div class='img-back' onClick={this.handleClick}>
+      <div class='img-back'>
         <p>{{ImgDatas.desc}}</p>
       </div>
     </figcaption>
@@ -75,6 +75,7 @@ export default {
     outline:1px solid transparent;  /* 去锯齿 */
   }
   .img-figure.is-inverse {
+    z-index: 12;
     transform:  translateX(100%) rotateY(180deg)!important;
   }
   .img-figure.is-center{
@@ -106,6 +107,12 @@ export default {
     backface-visibility: hidden;
     box-sizing: border-box;
     transform: rotateY(-180deg) translateZ(1px);
+  }
+  /* 处理手机端的样式问题 */
+  @media screen and (max-width: 1000px) {
+    figcaption .img-back p{
+      font-size: 10px;
+    }
   }
   figcaption .img-back  p {
     margin: 0;
