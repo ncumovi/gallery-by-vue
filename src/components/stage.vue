@@ -209,7 +209,7 @@ export default {
 <style scoped>
 
 .stage{
-  /* position: relative; */
+  position: relative;
   width: 100%;
   /*height: 680px; */
   height: 100%;
