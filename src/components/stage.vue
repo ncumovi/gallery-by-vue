@@ -4,13 +4,14 @@
         <img-figure v-for='(img,index) in imageDatas' :key="index"  :img-datas='img' @click.native='center(index)'/>
       </section>
       <nav class='controller-nav'>
-        <!-- <ControllerUnit key={index} arrange={this.state.imgsArranageArr[index]} inverse={this.inverse(index)} center={this.center(index)}/> -->
+        <control v-for='(img,index) in imageDatas' :key="index" :img-datas='img'  @click.native='controlImg(index)'></control>
       </nav>
     </section>
 </template>
 
 <script>
 import ImgFigure from './ImgFigure';
+import Control from './Control';
 //获取相关图片的数据
 var imgDatas = require('../assets/imageDatas.json');
 
@@ -47,11 +48,11 @@ export default {
           topY: [0, 0]
         }
       }
-
     }
   },
   components:{
-    ImgFigure:ImgFigure
+    ImgFigure:ImgFigure,
+    Control:Control
   },
   mounted:function(){
     //首先拿到舞台的大小
@@ -95,6 +96,14 @@ export default {
     this.rearrange(2);
   },
   methods:{
+    //导航条的点击事件
+    controlImg(index){
+      if(this.imageDatas[index].isCenter){ //是否居中
+        this.inverse(index);
+      }else{
+        this.center(index);
+      }
+    },
     // 翻转图片
     inverse(index){
 
@@ -208,5 +217,13 @@ export default {
   overflow: hidden;
   background-color: #ddd;
   perspective: 1800px;
+}
+.controller-nav{
+  position: absolute;
+  left: 0;
+  bottom: 30px;
+  z-index: 101;
+  width: 100%;
+  text-align: center;
 }
 </style>

@@ -66,11 +66,13 @@ export default {
     transform-style: preserve-3d;
     transition: all 0.6s ease-in-out ;
     transform-origin: 0 50% 0;
+    outline:1px solid transparent;  /* 去锯齿 */
   }
   .img-figure img{
     width: 240px;
     height: 240px;
     backface-visibility: hidden;
+     outline:1px solid transparent;  /* 去锯齿 */
   }
   .img-figure.is-inverse {
     transform:  translateX(320px) rotateY(180deg)!important;
