@@ -1,6 +1,6 @@
 <template>
 
-  <figure class="img-figure" :class="{'is-inverse':ImgDatas.isInverse}" :style="styObj" >
+  <figure class="img-figure" :class="{'is-inverse':ImgDatas.isInverse,'is-center':ImgDatas.isCenter}" :style="styObj" >
     <img :src='ImgDatas.imageUrl' :alt='ImgDatas.title'></img>
     <figcaption>
       <h2 class='img-title'>{{ImgDatas.title}}</h2>
@@ -56,10 +56,10 @@ export default {
     position: absolute;
     left: 0;
     top:0;
-    width: 320px;
-    height: 360px;
+    width: 16%;
+    /* height: 20%; */
     margin: 0;
-    padding: 40px;
+    padding: 2%;
     box-sizing: border-box;
     cursor: pointer;
     background-color: #fff;
@@ -69,21 +69,24 @@ export default {
     outline:1px solid transparent;  /* 去锯齿 */
   }
   .img-figure img{
-    width: 240px;
-    height: 240px;
+    width: 100%;
+    height: 100%;
     backface-visibility: hidden;
-     outline:1px solid transparent;  /* 去锯齿 */
+    outline:1px solid transparent;  /* 去锯齿 */
   }
   .img-figure.is-inverse {
-    transform:  translateX(320px) rotateY(180deg)!important;
+    transform:  translateX(100%) rotateY(180deg)!important;
+  }
+  .img-figure.is-center{
+    z-index: 12;
   }
   figcaption{
     text-align: center;
   }
   figcaption .img-title{
-    margin: 20px 0 0 0;
+    margin: 2% 0 0 0;
     color: #a7a0a2;
-    font-size: 16px;
+    font-size: 13px;
     backface-visibility: hidden;
   }
   figcaption .img-back {
@@ -93,10 +96,10 @@ export default {
     cursor: pointer;
     width: 100%;
     height: 100%;
-    padding: 50px 40px;
+    padding: 10% 8%;
     overflow: auto;
     color: #a7a0a2;
-    font-size: 22px;
+    font-size: 13px;
     line-height: 1.25;
     text-align: left;
     background-color: #fff;

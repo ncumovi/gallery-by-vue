@@ -101,6 +101,10 @@ export default {
       if(this.imageDatas[index].isCenter){ //是否居中
         this.inverse(index);
       }else{
+        // 初始化所有数据 事所有图片回归未翻转状态
+        for(var i=0;i<this.imageDatas.length;i++){
+          this.imageDatas[i].isInverse = false;
+        }
         this.center(index);
       }
     },
@@ -221,7 +225,8 @@ export default {
 .controller-nav{
   position: absolute;
   left: 0;
-  bottom: 30px;
+  height: 4%;;
+  bottom: 2.5rem;
   z-index: 101;
   width: 100%;
   text-align: center;

@@ -46,8 +46,6 @@ export default {
   transition: all 0.6s ease-in-out;
 }
 .controller-unit i{
-  width: 30px;
-  height: 30px;
   display: none;
   color: #fff;
 }
