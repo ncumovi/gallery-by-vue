@@ -24,7 +24,7 @@ one gallery project based on react
 
 ## Demo & Examples
 
-Live demo: https://ncumovi.github.io/gallery-react/
+Live demo: https://ncumovi.github.io/gallery-by-vue/
 
 
 ## Guideline
