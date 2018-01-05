@@ -55,47 +55,54 @@ export default {
     Control:Control
   },
   mounted:function(){
-    //首先拿到舞台的大小
-    var stageDom = this.$refs.stage,
-      stageW = stageDom.scrollWidth,
-      stageH = stageDom.scrollHeight,
-      halfStageW = Math.ceil(stageW / 2),
-      halfStageH = Math.ceil(stageH / 2);
-
-    //拿到一个imgageFigure的大小
-    var imgFigureDom = this.$children[0].$el,
-        imgW = imgFigureDom.scrollWidth,
-        imgH = imgFigureDom.scrollHeight,
-        halfImgW = Math.ceil(imgW / 2),
-        halfImgH = Math.ceil(imgH / 2);
-
-
-    //计算中心图片的位置
-    this.Constant.centerPos = {
-      left: (halfStageW - halfImgW)+'px',
-      top: (halfStageH - halfImgH)+'px'
+    var that = this;
+    this.initStage();
+    window.onresize = function(){
+      that.initStage();
     }
-
-    //计算左侧图片的位置 水平范围
-    this.Constant.hPosRange.leftSecx[0] = -halfImgW;
-    this.Constant.hPosRange.leftSecx[1] = halfStageW - halfImgW * 3;
-    //计算右侧图片的位置 水平范围
-    this.Constant.hPosRange.rightSecx[0] = halfStageW + halfImgW;
-    this.Constant.hPosRange.rightSecx[1] = stageW - halfImgW;
-    //计算水平图片的位置 竖直范围
-    this.Constant.hPosRange.y[0] = -halfImgH;
-    this.Constant.hPosRange.y[1] = stageH - halfImgH;
-    //计算上侧图片的位置 竖直范围
-    this.Constant.vPosRange.topY[0] = -halfImgH;
-    this.Constant.vPosRange.topY[1] = halfStageH - halfImgH * 3;
-
-    //计算上侧图片的位置 水平范围
-    this.Constant.vPosRange.x[0] = halfStageW - imgW;
-    this.Constant.vPosRange.x[1] = halfStageW;
-
-    this.rearrange(2);
   },
   methods:{
+    initStage(){
+    //首先拿到舞台的大小
+      var stageDom = this.$refs.stage,
+        stageW = stageDom.scrollWidth,
+        stageH = stageDom.scrollHeight,
+        halfStageW = Math.ceil(stageW / 2),
+        halfStageH = Math.ceil(stageH / 2);
+
+      //拿到一个imgageFigure的大小
+      var imgFigureDom = this.$children[0].$el,
+          imgW = imgFigureDom.scrollWidth,
+          imgH = imgFigureDom.scrollHeight,
+          halfImgW = Math.ceil(imgW / 2),
+          halfImgH = Math.ceil(imgH / 2);
+
+
+      //计算中心图片的位置
+      this.Constant.centerPos = {
+        left: (halfStageW - halfImgW)+'px',
+        top: (halfStageH - halfImgH)+'px'
+      }
+
+      //计算左侧图片的位置 水平范围
+      this.Constant.hPosRange.leftSecx[0] = -halfImgW;
+      this.Constant.hPosRange.leftSecx[1] = halfStageW - halfImgW * 3;
+      //计算右侧图片的位置 水平范围
+      this.Constant.hPosRange.rightSecx[0] = halfStageW + halfImgW;
+      this.Constant.hPosRange.rightSecx[1] = stageW - halfImgW;
+      //计算水平图片的位置 竖直范围
+      this.Constant.hPosRange.y[0] = -halfImgH;
+      this.Constant.hPosRange.y[1] = stageH - halfImgH;
+      //计算上侧图片的位置 竖直范围
+      this.Constant.vPosRange.topY[0] = -halfImgH;
+      this.Constant.vPosRange.topY[1] = halfStageH - halfImgH * 3;
+
+      //计算上侧图片的位置 水平范围
+      this.Constant.vPosRange.x[0] = halfStageW - imgW;
+      this.Constant.vPosRange.x[1] = halfStageW;
+
+      this.rearrange(2);
+    },
     //导航条的点击事件
     controlImg(index){
       if(this.imageDatas[index].isCenter){ //是否居中
